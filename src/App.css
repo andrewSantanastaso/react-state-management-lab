@@ -34,3 +34,7 @@ button {
 .money {
   font-weight: bold;
 }
+
+.team-container {
+  display: flex;
+}

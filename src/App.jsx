@@ -5,6 +5,8 @@ import "./App.css";
 const App = () => {
   const [team, setTeam] = useState([]);
   const [money, setMoney] = useState(100);
+  const [totalStregth, setTotalStrength] = useState(0);
+  const [totalAgility, setTotalAgility] = useState(0);
   const [zombieFighters, setZombieFighters] = useState([
     {
       name: "Survivor",
@@ -78,21 +80,65 @@ const App = () => {
     },
   ]);
   const handleAddFighter = (member) => {
-    setTeam([...team, member]);
+    if (money - member.price < 0) {
+      alert("You can not afford this member");
+      return;
+    } else {
+      setTeam([...team, member]);
+      setMoney(money - member.price);
+      setTotalStrength(totalStregth + member.strength);
+      setTotalAgility(totalAgility + member.agility);
+    }
   };
+
+  const handleRemoveFighter = (member) => {
+    let copyTeam = [...team];
+    let removeMember = copyTeam.indexOf(member);
+
+    copyTeam.splice(removeMember, 1);
+
+    setTeam(copyTeam);
+    setMoney(money + member.price);
+    setTotalAgility(totalAgility - member.agility);
+    setTotalStrength(totalStregth - member.strength);
+  };
+
   return (
     <div>
       <h2>Team</h2>
-      <div>
-        {team.map((member, index) => (
-          <ul key={index}>
-            <li>
-              <img src={member.img} alt={member.name} />
-            </li>
-            <li>{member.name}</li>
-          </ul>
-        ))}
-      </div>
+      {team.length === 0 ? (
+        <p>Add a team member</p>
+      ) : (
+        <div className="team-container">
+          {team.map((member, index) => (
+            <ul key={index}>
+              <li>
+                <img src={member.img} alt={member.name} />
+              </li>
+              <li>{member.name}</li>
+              <li>
+                <span>Price: </span>
+                {member.price}
+              </li>
+              <li>
+                <span>Strength: </span>
+                {member.strength}
+              </li>
+              <li>
+                <span>Agility: </span>
+                {member.agility}
+              </li>
+              <button onClick={() => handleRemoveFighter(member)}>
+                Remove
+              </button>
+            </ul>
+          ))}
+        </div>
+      )}
+      <h4>Team Strength: {totalStregth}</h4>
+      <h4>Team Agility: {totalAgility}</h4>
+      <h4>Balance: {money}</h4>
+
       <h2>Fighters</h2>
       <div className="fighters-container">
         {zombieFighters.map((zombieFighter, index) => (
@@ -117,11 +163,6 @@ const App = () => {
             <button onClick={() => handleAddFighter(zombieFighter)}>Add</button>
           </ul>
         ))}
-      </div>
-      <div>
-        <p>
-          <span className="money">Current Money:</span> {money}
-        </p>
       </div>
     </div>
   );
