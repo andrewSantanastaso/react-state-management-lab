@@ -1,9 +1,36 @@
+body {
+  background-color: gray;
+}
+
 ul {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
 }
 
 li {
   list-style: none;
   margin: 10px;
+  text-align: left;
+}
+
+button {
+  width: 50px;
+}
+
+.fighters-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.fighters-container span {
+  font-weight: bold;
+}
+
+.fighters-container button {
+  margin-left: 10px;
+}
+
+.money {
+  font-weight: bold;
 }
